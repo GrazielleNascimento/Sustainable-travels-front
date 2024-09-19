@@ -17,18 +17,32 @@ import CardMeal from './components/cards/card-meal';
 import CardPackage from './components/cards/card-package';
 import ItineraryButton from './components/btn-itenerary';
 import ItineraryForm from './components/itinerary-form';
+import Loading from './components/loading';
+import ItineraryDisplay from './components/display-itinerary';
+
 
 const CardsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
   padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 const CenteredContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const ContainerItineraryDisplay = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-left: 20px;
+  margin-right: 20px;
 `;
 
 function App() {
@@ -49,12 +63,14 @@ function App() {
   const [selectedPackages, setSelectedPackages] = useState(null);
   const [selectedMeals, setSelectedMeals] = useState(null);
   const [formData, setFormData] = useState({
-    id: "",
+    id: '',
     name: '',
     description: '',
     location: '',
   });
 
+  const [loading, setLoading] = useState(false);
+  const [generatedItinerary, setGeneratedItinerary] = useState('');
 
   useEffect(() => {
     fetchPlaces();
@@ -77,7 +93,7 @@ function App() {
     }
   };
 
-  //consultando accomodations
+  // consultando accomodations
   const fetchAccomodations = async () => {
     try {
       const accomodations = await apiService.getAccomodations();
@@ -163,16 +179,31 @@ function App() {
       packageID: selectedPackages.id,
     };
 
-    // criando o itinerario
-    apiService.createItinerary(itinerary);
+    setLoading(true);
 
-    //consultando o itinerario
-    const response = apiService.getItinerary(itinerary.id);
-    console.log('Itinerary created:', response);
+    await apiService.createItinerary(itinerary);
+
+    setTimeout(async () => {
+      try {
+        const response = await apiService.getItinerary(itinerary.id);
+        console.log('Itinerary created:', response);
+ 
+        setGeneratedItinerary(response.geminiAI);
+      } catch (error) {
+        console.error('Error fetching itinerary:', error);
+      } finally {
+      
+        setLoading(false);
+      }
+    }, 10000); // 10000 milissegundos = 10 segundos
+
   };
 
   const handleFormChange = (data) => {
-    setFormData(data);
+    setFormData({
+      ...data,
+      id: data.id ? parseInt(data.id, 10) : 0
+    });
   };
 
   const handleSelectItem = (item, section) => {
@@ -238,10 +269,6 @@ function App() {
           ))}
       </CardsContainer>
 
-      <br/>
-      <br/>
-      <br/>
-
       <Section title="Accomodations" description="Discover accommodations that combine comfort with environmental responsibility. Stay in places that adopt ecological practices and offer an unforgettable stay" />
       <CardsContainer>
         {accomodations.map((accomodation) => (
@@ -253,10 +280,6 @@ function App() {
           />
         ))}
       </CardsContainer>
-
-      <br/>
-      <br/>
-      <br/>
 
       <Section title="Transportations" description="Choose means of transportation that help reduce your carbon footprint and promote sustainable mobility. Find options that align with your commitment to the environment" />
       <CardsContainer>
@@ -270,10 +293,6 @@ function App() {
         ))}
       </CardsContainer>
 
-      <br/>
-      <br/>
-      <br/>
-
       <Section title="Events" description="Take part in events that celebrate sustainability and environmental awareness. Get involved in activities that not only entertain, but also contribute to a greener future" />
       <CardsContainer>
         {events.map((event) => (
@@ -285,11 +304,6 @@ function App() {
           />
         ))}
       </CardsContainer>
-
-        
-      <br/>
-      <br/>
-      <br/>
 
       <Section title="Guides" description="Take advantage of specialized guides that offer insights into sustainable practices and tips for eco-friendly travel. Browse recommendations that go beyond the ordinary" />
       <CardsContainer>
@@ -303,10 +317,6 @@ function App() {
         ))}
       </CardsContainer>
 
-      <br/>
-      <br/>
-      <br/>
-
       <Section title="Meals" description="Savor meals prepared with local ingredients and sustainable practices. Discover food options that respect the environment and delight your palate" />
       <CardsContainer>
         {meals.map((meal) => (
@@ -318,10 +328,6 @@ function App() {
           />
         ))}
       </CardsContainer>
-
-      <br/>
-      <br/>
-      <br/>
 
       <Section title="Packages" description="Plan your trip with packages that include sustainable experiences and accommodation. Find the perfect package that combines adventure and environmental responsibility" />
       <CardsContainer>
@@ -335,13 +341,20 @@ function App() {
         ))}
       </CardsContainer>
 
-      <br/>
-      <br/>
-      <br/>
-
       <CenteredContainer>
         <ItineraryButton onClick={handleGenerateItinerary} />
       </CenteredContainer>
+
+      <br/>
+      <br/>
+      <br/>
+      
+      {loading && <Loading />}
+      {generatedItinerary && 
+        <ContainerItineraryDisplay>
+          <ItineraryDisplay itinerary={generatedItinerary} />
+        </ContainerItineraryDisplay>
+      }
 
       <br/>
       <br/>
