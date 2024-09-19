@@ -11,7 +11,6 @@ const SectionTitle = styled.h2`
   padding-bottom: 10px;
   
   &:before {
-    content: "";
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -23,7 +22,6 @@ const SectionTitle = styled.h2`
   }
 
   &:after {
-    content: "🌿"; 
     position: absolute;
     left: -30px;
     top: 50%;
