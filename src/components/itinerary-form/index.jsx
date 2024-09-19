@@ -1,4 +1,3 @@
-// ItineraryForm.jsx
 import React from 'react';
 import styled from 'styled-components';
 
@@ -59,12 +58,13 @@ const ItineraryForm = ({ onChange }) => {
   const [location, setLocation] = React.useState('');
 
   const handleChange = (setter) => (e) => {
-    setter(e.target.value);
+    const newValue = e.target.value;
+    setter(newValue);
     onChange({
-      id,
-      name,
-      description,
-      location
+      id: setter === setId ? newValue : id,
+      name: setter === setName ? newValue : name,
+      description: setter === setDescription ? newValue : description,
+      location: setter === setLocation ? newValue : location,
     });
   };
 
@@ -74,7 +74,7 @@ const ItineraryForm = ({ onChange }) => {
         <Label htmlFor="id">ID:</Label>
         <Input
           id="id"
-          type="text"
+          type="number"
           value={id}
           onChange={handleChange(setId)}
           placeholder="ID for this Itinerary"
