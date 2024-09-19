@@ -78,8 +78,7 @@ const apiService = {
 
   getItinerary: async (id) => {
     try {
-      const intId = parseInt(id, 10);
-      const response = await axios.get(`${apiBaseUrl}/itinerary/getById/${intId}`);
+      const response = await axios.get(`${apiBaseUrl}/itinerary/getById/${id}`);
       return response.data;
     } catch (error) {
       throw error;
