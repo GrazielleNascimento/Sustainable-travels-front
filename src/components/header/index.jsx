@@ -1,16 +1,16 @@
 import styled from 'styled-components';
-import { FaLeaf } from 'react-icons/fa'; // Exemplo de ícone de folha
+import { FaLeaf } from 'react-icons/fa';
 
 const HeaderContainer = styled.header`
   width: 100%;
   height: 70px;
-  background: linear-gradient(135deg, #2e8b57, #8fbc8f); /* Gradiente que remete à natureza */
+  background: linear-gradient(135deg, #2e8b57, #8fbc8f); 
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  position: fixed; /* Para o header ficar fixo no topo */
+  position: fixed; 
   top: 0;
   z-index: 1000;
 `;
@@ -32,11 +32,11 @@ export default function Header() {
   return (
     <HeaderContainer>
       <IconWrapper>
-        <FaLeaf /> {/* Ícone de folha */}
+        <FaLeaf />
       </IconWrapper>
       <Title>Discover Your Perfect Itinerary!</Title>
       <IconWrapper>
-        {/* Espaço reservado para ícone adicional ou logo */}
+        
       </IconWrapper>
     </HeaderContainer>
   );
