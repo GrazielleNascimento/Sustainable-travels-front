@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FaLeaf } from 'react-icons/fa';
 
 const Button = styled.button`
-  background-color: #4CAF50; /* Verde sustentável */
+  background-color: #4CAF50;
   color: #fff;
   border: none;
   border-radius: 12px;
-  padding: 10px 20px;
-  font-size: 1rem;
+  padding: 30px 80px;
+  font-size: 2rem;
   font-family: 'Roboto', sans-serif;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
@@ -17,31 +18,32 @@ const Button = styled.button`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    background-color: #45a049; /* Tom mais escuro de verde */
+    background-color: #45a049;
     transform: scale(1.05);
   }
 
   &:active {
-    background-color: #388e3c; /* Tom ainda mais escuro quando pressionado */
+    background-color: #388e3c;
   }
 
   & > svg {
-    margin-right: 8px; /* Espaço entre ícone e texto */
+    margin-right: 8px;
   }
 `;
 
-const Icon = styled.svg`
-  width: 20px;
-  height: 20px;
-  fill: #fff;
+const Icon = styled.div`
+  font-size: 32px;
+  color: #fff;
+  margin-right: 10px;
 `;
+
 
 const ItineraryButton = ({ onClick }) => (
   <Button onClick={onClick}>
-    <Icon viewBox="0 0 24 24">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17h-2v-6h2v6zm0-8h-2V7h2v4z"/>
+    <Icon>
+      <FaLeaf />
     </Icon>
-    Generate Itinerary
+     Generate Itinerary
   </Button>
 );
 
